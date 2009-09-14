@@ -1,0 +1,25 @@
+Ruhl (Ruby Hypertext Language)
+
+This project is here to flesh out an idea.  What I want is to have developers work with HTML and with the simple addition of a 'ruby' attribute (and a file extension change), convert it to a dynamic page.
+
+Notes (use cases) for me to remember:
+
+Use the repeater pattern:
+
+<ul id="aab" ruby="@results">
+ <li>Lorem ipsum dolor sit amet</li>
+ <li>consectetur adipiscing elit</li>
+</ul>
+
+@results would know how to represent itself in the context of the ul element.  In other words, it would know how to produce <li> elements.
+
+
+<h1 ruby="@post">
+
+@post would know how to represent itself in the context of the h1 element.
+
+
+The ruby executed would replace the content of the element it was being called on.  In addition, the ruby attribute would be removed from the output.
+
+Now to see if/how this will work.
+
