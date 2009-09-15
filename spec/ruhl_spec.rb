@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), 'spec_helper')
 
 class Presenter 
-  def to_html(tag)
+  def to_html(tag = nil)
     "data from presenter"     
   end
 end
@@ -19,9 +19,13 @@ describe Ruhl do
     end
 
     it "content of p should be content from data_from_method" do
-      puts Ruhl.new(@html).render(self)
+       html = Ruhl.new(@html).render(self)
+       doc = do_parse(html)
+       doc.xpath('//h1').first.content.should == @data.to_html
     end
 
   end
 end
+
+
 

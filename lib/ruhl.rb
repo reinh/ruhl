@@ -21,7 +21,7 @@ class Ruhl
       tag.remove_attribute('ruby')
     end
 
-    doc
+    doc.to_s
   end
 end
 
