@@ -17,6 +17,8 @@ class Ruhl
       elsif ivar = scope.instance_variable_get(code)
         tag.content = ivar.to_html(tag)
       end
+
+      tag.remove_attribute('ruby')
     end
 
     doc
