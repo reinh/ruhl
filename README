@@ -22,7 +22,7 @@ Method :present_results would know how to represent itself in the context of the
 
 Method :page_header would know how to represent itself in the context of the h1 element.
 
-The ruby executed would replace the content of the element it was being called on.  In addition, the ruby attribute would be removed from the output.
+The ruby executed would replace the content of the element it was being called on.  
 
 
 ##############################################################################
@@ -32,3 +32,8 @@ The ruby executed would replace the content of the element it was being called o
 content: generate_title is telling the parser to replace attribute 'content' with results from generate_title method.
 
 
+##############################################################################
+
+Things to note:
+
+1) The ruby attribute is always removed from the output.
