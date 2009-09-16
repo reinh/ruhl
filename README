@@ -37,3 +37,4 @@ content: generate_title is telling the parser to replace attribute 'content' wit
 Things to note:
 
 1) The ruby attribute is always removed from the output.
+2) Each method called must accept a tag parameter.  
