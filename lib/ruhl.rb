@@ -47,7 +47,7 @@ module Ruhl
     end
 
     def execute_ruby(tag, code)
-      scope.send(code)
+      scope.send(code, tag)
     end
   end
 end
