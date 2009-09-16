@@ -1,6 +1,9 @@
 Ruhl (Ruby Hypertext Language)
 
-This project is here to flesh out an idea.  What I want is to have developers work with HTML and with the simple addition of a 'ruby' attribute (and a file extension change), convert it to a dynamic page.
+This project is here to flesh out an idea.  What I want is to have developers work with HTML and with the simple addition of a 'ruby' attribute, convert it to a dynamic page.
+
+At no time in the dev process would the view be unviewable in a browser.  The view could actually retain the original template data the designer used because this replaces the content.  I think this is a nice plus.
+
 
 Notes (use cases) for me to remember:
 
@@ -38,3 +41,8 @@ Things to note:
 
 1) The ruby attribute is always removed from the output.
 2) Each method called must accept a tag parameter.  
+
+TODO: 
+
+1) Working on supporting templates 
+
