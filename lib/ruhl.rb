@@ -1,27 +1,53 @@
+$:.unshift File.dirname(__FILE__)
+
 require 'nokogiri'
+require 'ruhl/errors'
 
-class Ruhl
-  attr_reader :doc
 
-  def initialize(html)
-    @doc = Nokogiri::HTML(html)
-  end
+module Ruhl
+  class Engine
+    attr_reader :doc, :scope
 
-  def render(scope)
-    raise "No scope defined." unless scope
-
-    doc.xpath('//*[@ruby]').each do |tag|
-      code = tag['ruby']
-      if scope.respond_to?(code)
-        tag.content = scope.send(code)
-      elsif ivar = scope.instance_variable_get(code)
-        tag.content = ivar.to_html(tag)
-      end
-
-      tag.remove_attribute('ruby')
+    def initialize(html)
+      @doc = Nokogiri::HTML(html)
     end
 
-    doc.to_s
+    def render(current_scope)
+      set_scope(current_scope)
+
+      doc.xpath('//*[@ruby]').each do |tag|
+        code = tag['ruby']
+
+        if code =~ /^\w+:/
+          process_attribute(tag,code)
+        else
+          tag.content = execute_ruby(tag,code)
+        end
+
+        tag.remove_attribute('ruby')
+      end
+
+      doc.to_s
+    end
+
+    private
+
+    def process_attribute(tag,code)
+      parts = code.split(';')
+      parts.each do |pair|
+        attribute, value = pair.split(':')
+
+        tag[attribute] = execute_ruby(tag, value.strip)
+      end
+    end
+
+    def set_scope(current_scope)
+      raise Ruhl::NoScopeError unless current_scope
+      @scope = current_scope 
+    end
+
+    def execute_ruby(tag, code)
+      scope.send(code)
+    end
   end
 end
-
