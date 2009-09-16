@@ -9,8 +9,6 @@ Notes (use cases) for me to remember:
 
 ##############################################################################
 
-Use the repeater pattern:
-
 <ul id="aab" ruby="present_results">
  <li>Lorem ipsum dolor sit amet</li>
  <li>consectetur adipiscing elit</li>
