@@ -20,7 +20,7 @@ module Ruhl
         if code =~ /^\w+:/
           process_attribute(tag,code)
         else
-          tag.content = execute_ruby(tag,code)
+          tag.inner_html = execute_ruby(tag,code)
         end
 
         tag.remove_attribute('ruby')
