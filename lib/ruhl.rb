@@ -3,7 +3,6 @@ $:.unshift File.dirname(__FILE__)
 require 'nokogiri'
 require 'ruhl/errors'
 
-
 module Ruhl
   class Engine
     attr_reader :doc, :scope

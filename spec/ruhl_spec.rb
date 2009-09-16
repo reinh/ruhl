@@ -8,8 +8,8 @@ def data_from_method(tag = nil)
   "I am data from a method"
 end
 
-def generate_title(tag = nil)
-  "I am a custom title"
+def generate_description(tag = nil)
+  "I am a custom meta description"
 end
 
 def generate_keywords(tag = nil)
@@ -34,8 +34,16 @@ describe Ruhl do
       @html = File.read html(:seo)
     end
 
-    it "metaDescription should be replaced" do
+    it "meta keywords should be replaced" do
       doc = create_doc
+      doc.xpath('//meta[@name="keywords"]').first['content'].
+        should == generate_keywords 
+    end
+
+    it "meta title should be replaced" do
+      doc = create_doc
+      doc.xpath('//meta[@name="description"]').first['content'].
+        should == generate_description
     end
   end
 end
