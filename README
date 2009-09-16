@@ -28,9 +28,9 @@ The ruby executed would replace the content of the element it was being called o
 
 ##############################################################################
 
-<meta ruby="content: generate_title" content='This is a description template' id='metaDescription' name='description' />
+<meta ruby="content: meta_description" content='This is a description template' id='metaDescription' name='description' />
 
-content: generate_title is telling the parser to replace attribute 'content' with results from generate_title method.
+content: meta_description is telling the parser to replace attribute 'content' with results from meta_description method.
 
 
 ##############################################################################
