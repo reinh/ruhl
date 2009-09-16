@@ -16,6 +16,10 @@ def generate_keywords(tag = nil)
   "I, am, custom, keywords"
 end
 
+def present_results(tag = nil)
+  "<li>line item 1</li><li>line item 2</li>"
+end
+
 describe Ruhl do
 
   describe "basic.html" do
@@ -44,6 +48,18 @@ describe Ruhl do
       doc = create_doc
       doc.xpath('//meta[@name="description"]').first['content'].
         should == generate_description
+    end
+  end
+
+  describe "medium.html" do
+    before do
+      @html = File.read html(:medium)
+    end
+
+    it "ul content should have new li's" do
+      doc = create_doc
+      ul = doc.xpath('//ul').first
+      ul.inner_html.should ==  "<li>line item 1</li>\n<li>line item 2</li>\n"
     end
   end
 end

@@ -39,6 +39,7 @@ Things to note:
 
 1) The ruby attribute is always removed from the output.
 2) Each method called must accept a tag parameter.  
+  e.g def page_header(tag)
 
 TODO: 
 
