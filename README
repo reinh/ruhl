@@ -37,9 +37,14 @@ content: meta_description is telling the parser to replace attribute 'content' w
 
 Things to note:
 
-1) The ruby attribute is always removed from the output.
-2) Each method called must accept a tag parameter.  
-  e.g def page_header(tag)
+* The ruby attribute is always removed from the output.
+
+* Each method called must accept a tag parameter.  
+    e.g def page_header(tag)
+
+* Since it's just HTML, syntax highlighting is built-in.  For vim, just add this to your ~/.vimrc:
+    au BufNewFile,BufRead *.ruhl set filetype=html
+
 
 TODO: 
 
