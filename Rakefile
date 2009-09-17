@@ -12,3 +12,19 @@ Spec::Rake::SpecTask.new(:rcov) do |t|
   t.rcov = true
   t.rcov_opts = IO.readlines("spec/rcov.opts").map {|l| l.chomp.split " "}.flatten
 end
+
+
+begin
+  require 'jeweler'
+  Jeweler::Tasks.new do |gemspec|
+    gemspec.name = "ruhl"
+    gemspec.summary = "Ruby Hypertext Language"
+    gemspec.description = "Make your HTML dynamic with the addition of a ruby attribute."
+    gemspec.email = "andy@stonean.com"
+    gemspec.homepage = "http://github.com/stonean/ruhl"
+    gemspec.authors = ["Andrew Stone"]
+  end
+rescue LoadError
+  puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
+end
+
