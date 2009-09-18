@@ -7,7 +7,27 @@ At no time in the dev process would the view be unviewable in a browser.  The vi
 
 Notes (use cases) for me to remember:
 
-##############################################################################
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+:: Basic Use ::
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+<h1 ruby="page_header">
+
+Method :page_header would know how to represent itself in the context of the h1 element.
+
+The ruby executed would replace the content of the element it was being called on.  
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+:: Replacing attribute values ::
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+<meta ruby="content: meta_description" content='This is a description template' id='metaDescription' name='description' />
+
+content: meta_description is telling the parser to replace attribute 'content' with results from meta_description method.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+:: Don't use iterators in views ::
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 <ul id="aab" ruby="present_results">
  <li>Lorem ipsum dolor sit amet</li>
@@ -16,26 +36,36 @@ Notes (use cases) for me to remember:
 
 Method :present_results would know how to represent itself in the context of the ul element.  In other words, it would know how to produce <li> elements.
 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+:: Using a Layout ::
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-##############################################################################
+Layout:
+<html>
+  <head>
+    <title>This is a title template</title>
+  </head>
+  <body>
+    <div ruby="_render_"></div>
+  </body>
+</html>
 
-<h1 ruby="page_header">
+Fragment:
+<h1 ruby="generate_h1">I am a templated headline</h1>
+<p ruby="my_content">Lorem ipsum dolor sit amet</p>
 
-Method :page_header would know how to represent itself in the context of the h1 element.
+To use:
 
-The ruby executed would replace the content of the element it was being called on.  
+Ruhl::Engine.new(File.read(fragment), :layout => path_to_layout).render(self)
 
-
-##############################################################################
-
-<meta ruby="content: meta_description" content='This is a description template' id='metaDescription' name='description' />
-
-content: meta_description is telling the parser to replace attribute 'content' with results from meta_description method.
+Returns the expected result of parsed Layout w/ parsed Fragment.  Note the use of the _render_ method.  This is a 'special' method that Ruhl uses to inject the results of the parsed fragment into the layout.
 
 
-##############################################################################
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+:: Notes ::
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Things to note:
+* No eval (I don't think eval is evil, it's just not the way this works)
 
 * The ruby attribute is always removed from the output.
 
@@ -46,7 +76,9 @@ Things to note:
     au BufNewFile,BufRead *.ruhl set filetype=html
 
 
-TODO: 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+:: TODO ::
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 1) Work on supporting templates  (shouldn't be hard)
 2) Work on supporting partials (shouldn't be hard)

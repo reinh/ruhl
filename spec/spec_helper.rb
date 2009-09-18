@@ -8,8 +8,9 @@ def do_parse(html)
   Nokogiri::HTML(html)
 end
 
-def create_doc
-  html = Ruhl::Engine.new(@html).render(self)
+def create_doc(layout = nil)
+  options = {:layout => layout} 
+  html = Ruhl::Engine.new(@html, :layout => layout).render(self)
   do_parse(html)
 end
  

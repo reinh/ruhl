@@ -9,7 +9,7 @@ module Sinatra
     private
 
     def render_ruhl(template, data, options, locals, &block)
-      ::Ruhl::Engine.new(data).render(self)
+      ::Ruhl::Engine.new(data, options).render(self)
     end
   end
 end

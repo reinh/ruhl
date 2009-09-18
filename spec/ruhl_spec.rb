@@ -20,6 +20,10 @@ def present_results(tag = nil)
   "<li>line item 1</li><li>line item 2</li>"
 end
 
+def my_content(tag = nil)
+  "hello from my content."
+end
+
 describe Ruhl do
 
   describe "basic.html" do
@@ -60,6 +64,18 @@ describe Ruhl do
       doc = create_doc
       ul = doc.xpath('//ul').first
       ul.inner_html.should ==  "<li>line item 1</li>\n<li>line item 2</li>\n"
+    end
+  end
+
+  describe "fragment.html" do
+    before do
+      @html = File.read html(:fragment)
+    end
+
+    it "will be injected into layout.html" do
+      doc  = create_doc( html(:layout) )
+      puts '*'*40
+      puts doc.to_s
     end
   end
 end
