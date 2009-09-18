@@ -74,8 +74,8 @@ describe Ruhl do
 
     it "will be injected into layout.html" do
       doc  = create_doc( html(:layout) )
-      puts '*'*40
-      puts doc.to_s
+      doc.xpath('//h1').should_not be_empty
+      doc.xpath('//p').should_not be_empty
     end
   end
 end
