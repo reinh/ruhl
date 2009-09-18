@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ruhl}
-  s.version = "0.1.0"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Andrew Stone"]
-  s.date = %q{2009-09-16}
+  s.date = %q{2009-09-17}
   s.description = %q{Make your HTML dynamic with the addition of a ruby attribute.}
   s.email = %q{andy@stonean.com}
   s.extra_rdoc_files = [
@@ -23,7 +23,10 @@ Gem::Specification.new do |s|
      "lib/ruhl.rb",
      "lib/ruhl/errors.rb",
      "lib/ruhl/sinatra.rb",
+     "ruhl.gemspec",
      "spec/html/basic.html",
+     "spec/html/fragment.html",
+     "spec/html/layout.html",
      "spec/html/medium.html",
      "spec/html/seo.html",
      "spec/rcov.opts",
