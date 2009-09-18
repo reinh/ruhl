@@ -113,7 +113,7 @@ Sidebar:
 
 To use:
 
-Ruhl::Engine.new(File.read(fragment)).render(self)
+Ruhl::Engine.new(File.read(path_to_main)).render(self)
 
 Returns the expected result of parsed Main with sidebar div contents 
 replaced with parsed sidebar partial contents.  
