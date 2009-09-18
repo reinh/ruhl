@@ -80,6 +80,5 @@ Returns the expected result of parsed Layout w/ parsed Fragment.  Note the use o
 :: TODO ::
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-1) Work on supporting templates  (shouldn't be hard)
-2) Work on supporting partials (shouldn't be hard)
+1) Work on supporting partials (shouldn't be hard)
 
