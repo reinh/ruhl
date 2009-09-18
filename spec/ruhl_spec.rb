@@ -24,6 +24,10 @@ def my_content(tag = nil)
   "hello from my content."
 end
 
+def sidebar_partial(tag = nil)
+  html(:sidebar)
+end
+
 describe Ruhl do
 
   describe "basic.html" do
@@ -76,6 +80,17 @@ describe Ruhl do
       doc  = create_doc( html(:layout) )
       doc.xpath('//h1').should_not be_empty
       doc.xpath('//p').should_not be_empty
+    end
+  end
+
+  describe "main_with_sidebar.html" do
+    before do
+      @html = File.read html(:main_with_sidebar)
+    end
+
+    it "should replace sidebar with partial contents" do
+      doc = create_doc
+      puts doc.to_s
     end
   end
 end

@@ -43,13 +43,29 @@ module Ruhl
       parts = code.split(';')
       parts.each do |pair|
         attribute, value = pair.split(':')
+        
+        value.strip!
 
-        tag[attribute] = execute_ruby(tag, value.strip)
+        if attribute  == "_partial"
+          tag.inner_html = render_partial(tag, value)
+        else
+          tag[attribute] = execute_ruby(tag, value)
+        end
       end
     end
 
     def render_with_layout
-     doc = Nokogiri::HTML( File.read(@layout) ) 
+      render_file( File.read(@layout) ) 
+    end
+
+    def render_partial(tag, code)
+      file = execute_ruby(tag, code)
+      raise PartialNotFoundError.new(file) unless File.exists?(file)
+      render_file( File.read(file) )
+    end
+
+    def render_file(contents)
+     doc = Nokogiri::HTML( contents ) 
      parse_doc(doc)
      doc.to_s
     end

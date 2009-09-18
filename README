@@ -1,8 +1,12 @@
 Ruhl (Ruby Hypertext Language)
 
-This project is here to flesh out an idea.  What I want is to have developers work with HTML and with the simple addition of a 'ruby' attribute, convert it to a dynamic page.
+This project is here to flesh out an idea.  What I want is to have developers 
+work with HTML and with the simple addition of a 'ruby' attribute, convert it 
+to a dynamic page.
 
-At no time in the dev process would the view be unviewable in a browser.  The view could actually retain the original template data the designer used because this replaces the content.  I think this is a nice plus.
+At no time in the dev process would the view be unviewable in a browser.  
+The view could actually retain the original template data the designer used 
+because this replaces the content.  I think this is a nice plus.
 
 
 Notes (use cases) for me to remember:
@@ -13,17 +17,21 @@ Notes (use cases) for me to remember:
 
 <h1 ruby="page_header">
 
-Method :page_header would know how to represent itself in the context of the h1 element.
+Method :page_header would know how to represent itself in the context of 
+the h1 element.
 
-The ruby executed would replace the content of the element it was being called on.  
+The ruby executed would replace the content of the element it was being 
+called on.  
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 :: Replacing attribute values ::
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-<meta ruby="content: meta_description" content='This is a description template' id='metaDescription' name='description' />
+<meta ruby="content: meta_description" content='This is a description template' 
+  id='metaDescription' name='description' />
 
-content: meta_description is telling the parser to replace attribute 'content' with results from meta_description method.
+content: meta_description is telling the parser to replace attribute 'content'
+with results from meta_description method.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 :: Don't use iterators in views ::
@@ -34,7 +42,9 @@ content: meta_description is telling the parser to replace attribute 'content' w
  <li>consectetur adipiscing elit</li>
 </ul>
 
-Method :present_results would know how to represent itself in the context of the ul element.  In other words, it would know how to produce <li> elements.
+Method :present_results would know how to represent itself in the 
+context of the ul element.  In other words, it would know how to 
+produce <li> elements.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 :: Using a Layout ::
@@ -58,7 +68,59 @@ To use:
 
 Ruhl::Engine.new(File.read(fragment), :layout => path_to_layout).render(self)
 
-Returns the expected result of parsed Layout w/ parsed Fragment.  Note the use of the _render_ method.  This is a 'special' method that Ruhl uses to inject the results of the parsed fragment into the layout.
+Returns the expected result of parsed Layout w/ parsed Fragment. 
+
+Note the use of the _render_ method.  This is a 'special' method that 
+Ruhl uses to inject the results of the parsed fragment into the layout.
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+:: Using a Partial ::
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Main:
+<html>
+  <head>
+    <title>This is a title template</title>
+  </head>
+  <body>
+    <div id="wrap">
+      <div id="sidebar" ruby="_partial: sidebar_partial">
+        <h3>Sidebar links</h3>
+        <ul>
+          <li><a href="#">Link 1</a></li>
+          <li><a href="#">Link 2</a></li>
+          <li><a href="#">Link 3</a></li>
+          <li><a href="#">Link 4</a></li>
+        </ul>
+      </div>
+      <div id="main">
+        <h1> My main content</h1>
+        <p>Text designers would put here to test their layout</p>
+      </div>
+    </div>
+  </body>
+</html>
+
+Sidebar:
+<h3>Real Sidebarlinks</h3>
+<ul>
+  <li><a href="#">Real Link 1</a></li>
+  <li><a href="#">Real Link 2</a></li>
+  <li><a href="#">Real Link 3</a></li>
+  <li><a href="#">Real Link 4</a></li>
+</ul>
+
+To use:
+
+Ruhl::Engine.new(File.read(fragment)).render(self)
+
+Returns the expected result of parsed Main with sidebar div contents 
+replaced with parsed sidebar partial contents.  
+
+Note the use of the _partial key.  This is a 'special' key that Ruhl 
+uses to inject the results of the parsed partial into the contents
+of the calling node.
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -72,7 +134,8 @@ Returns the expected result of parsed Layout w/ parsed Fragment.  Note the use o
 * Each method called must accept a tag parameter.  
     e.g def page_header(tag)
 
-* Since it's just HTML, syntax highlighting is built-in.  For vim, just add this to your ~/.vimrc:
+* Since it's just HTML, syntax highlighting is built-in.  
+  For vim, just add this to your ~/.vimrc:
     au BufNewFile,BufRead *.ruhl set filetype=html
 
 
