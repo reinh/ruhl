@@ -72,7 +72,6 @@ describe Ruhl do
 
     it "ul content should have new li's" do
       doc = create_doc
-      puts doc.to_s
       #ul = doc.xpath('//ul').first
       #ul.inner_html.should ==  "<li>line item 1</li>\n<li>line item 2</li>\n"
     end

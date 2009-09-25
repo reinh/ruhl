@@ -85,13 +85,13 @@ module Ruhl
     end
 
     def parse_doc(doc)
-      if (nodes = doc.xpath('//*[@ruby]')).empty?
-        nodes = doc.search('*[@ruby]')
+      if (nodes = doc.xpath('//*[@data-ruhl]')).empty?
+        nodes = doc.search('*[@data-ruhl]')
       end
 
       #TODO: this feels inefficient...need to rethink
       nodes.each do |tag|
-        code = tag['ruby']
+        code = tag['data-ruhl']
 
         if code =~ /^\w+:/
           process_attribute(tag,code)
@@ -99,7 +99,7 @@ module Ruhl
           tag.inner_html = execute_ruby(tag,code)
         end
 
-        tag.remove_attribute('ruby')
+        tag.remove_attribute('data-ruhl')
 
         # We are changing the NodeSet, stop and reparse
         parse_doc(doc)
