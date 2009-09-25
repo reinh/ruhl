@@ -5,12 +5,16 @@ require 'ruhl/errors'
 
 module Ruhl
   class Engine
-    attr_reader :document, :scope, :layout
+    attr_reader :document, :scope, :layout, :local_object
 
     def initialize(html, options = {})
+      @local_object = options[:local_object]
+
       if @layout = options[:layout]
         raise LayoutNotFoundError.new(@layout) unless File.exists?(@layout)
+      end
 
+      if @layout || @local_object
         @document = Nokogiri::HTML.fragment(html)
       else
         @document = Nokogiri::HTML(html)
@@ -48,6 +52,9 @@ module Ruhl
 
         if attribute  == "_partial"
           tag.inner_html = render_partial(tag, value)
+        elsif attribute  == "_collection"
+          doc = render_collection(tag, value)
+          tag.inner_html =  doc
         else
           tag[attribute] = execute_ruby(tag, value)
         end
@@ -64,6 +71,13 @@ module Ruhl
       render_file( File.read(file) )
     end
 
+    def render_collection(tag, code)
+      results = execute_ruby(tag, code)
+      results.collect do |item|
+        Ruhl::Engine.new(tag.inner_html, :local_object => item).render(scope)
+      end.to_s
+    end
+
     def render_file(contents)
      doc = Nokogiri::HTML( contents ) 
      parse_doc(doc)
@@ -72,7 +86,7 @@ module Ruhl
 
     def parse_doc(doc)
       if (nodes = doc.xpath('//*[@ruby]')).empty?
-        nodes = doc.xpath('*[@ruby]')
+        nodes = doc.search('*[@ruby]')
       end
 
       nodes.each do |tag|
@@ -85,6 +99,10 @@ module Ruhl
         end
 
         tag.remove_attribute('ruby')
+
+        # We are changing the NodeSet, stop and reparse
+        parse_doc(doc)
+        break;
       end
     end
       
@@ -95,7 +113,11 @@ module Ruhl
 
     def execute_ruby(tag, code)
       unless code == '_render_'
-        scope.send(code, tag)
+        if local_object && local_object.respond_to?(code)
+          local_object.send(code)
+        else
+          scope.send(code, tag)
+        end
       else
         _render_
       end

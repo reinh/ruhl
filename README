@@ -37,14 +37,46 @@ with results from meta_description method.
 :: Don't use iterators in views ::
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-<ul id="aab" ruby="present_results">
- <li>Lorem ipsum dolor sit amet</li>
- <li>consectetur adipiscing elit</li>
-</ul>
+<table id="aab" ruby="_collection: user_list">
+  <tr>
+    <td ruby="name">John Doe</td>
+    <td ruby="email">john@doe.com</td>
+  </tr>
+</table>
 
-Method :present_results would know how to represent itself in the 
-context of the ul element.  In other words, it would know how to 
-produce <li> elements.
+A few things to note about this:
+
+1) The method _collection calls (in this case :user_list) must implement :each
+
+2) Ruhl iterates over the results and renders the inner html 
+   against each object.
+
+3) Ruhl will first try to call the ruby method (:name) against the 
+   local object.  If the local object does not respond_to? the ruby method,
+   Ruhl will try to call it against the scope.
+
+If user_list return an array of User objects like:
+
+[ User.create(:name => 'Rupert Boy', :email => 'rupert@stonean.com'),
+  User.create(:name => 'Kaylee Girl', :email => 'kaylee@stonean.com'),
+  User.create(:name => 'Monty Man', :email => 'monty@stonean.com')]
+
+<table id="aab">
+  <tr>
+    <td>Rupert Boy</td>
+    <td>rupert@stonean.com</td>
+  </tr>
+  <tr>
+    <td>Kaylee Girl</td>
+    <td>kaylee@stonean.com</td>
+  </tr>
+  <tr>
+    <td>Monty Man</td>
+    <td>monty@stonean.com</td>
+  </tr>
+</table>
+
+
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 :: Using a Layout ::

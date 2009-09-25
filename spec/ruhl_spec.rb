@@ -16,16 +16,22 @@ def generate_keywords(tag = nil)
   "I, am, custom, keywords"
 end
 
-def present_results(tag = nil)
-  "<li>line item 1</li><li>line item 2</li>"
-end
-
 def my_content(tag = nil)
   "hello from my content."
 end
 
 def sidebar_partial(tag = nil)
   html(:sidebar)
+end
+
+def user_list(tag = nil)
+  [ 
+    TestUser.new('Jane', 'Doe', 'jane@stonean.com'),
+    TestUser.new('John', 'Joe', 'john@stonean.com'),
+    TestUser.new('Jake', 'Smo', 'jake@stonean.com'),
+    TestUser.new('Paul', 'Tin', 'paul@stonean.com')
+  ]
+
 end
 
 describe Ruhl do
@@ -66,8 +72,9 @@ describe Ruhl do
 
     it "ul content should have new li's" do
       doc = create_doc
-      ul = doc.xpath('//ul').first
-      ul.inner_html.should ==  "<li>line item 1</li>\n<li>line item 2</li>\n"
+      puts doc.to_s
+      #ul = doc.xpath('//ul').first
+      #ul.inner_html.should ==  "<li>line item 1</li>\n<li>line item 2</li>\n"
     end
   end
 
@@ -90,7 +97,6 @@ describe Ruhl do
 
     it "should replace sidebar with partial contents" do
       doc = create_doc
-      puts doc.to_s
     end
   end
 end

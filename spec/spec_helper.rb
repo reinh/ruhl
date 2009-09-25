@@ -13,4 +13,14 @@ def create_doc(layout = nil)
   html = Ruhl::Engine.new(@html, :layout => layout).render(self)
   do_parse(html)
 end
+
+class TestUser
+  attr_accessor :first_name, :last_name, :email
+
+  def initialize(first, last , email)
+    @first_name = first
+    @last_name  = last
+    @email = email
+  end
+end
  
