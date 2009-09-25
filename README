@@ -55,6 +55,13 @@ A few things to note about this:
    local object.  If the local object does not respond_to? the ruby method,
    Ruhl will try to call it against the scope.
 
+To sum this up in code:
+
+      user_list.collect do |item|
+        Ruhl::Engine.new(tag.inner_html, :local_object => item).render(scope)
+      end.to_s
+
+
 If user_list return an array of User objects like:
 
 [ User.create(:name => 'Rupert Boy', :email => 'rupert@stonean.com'),
