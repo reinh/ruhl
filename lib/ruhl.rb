@@ -89,6 +89,7 @@ module Ruhl
         nodes = doc.search('*[@ruby]')
       end
 
+      #TODO: this feels inefficient...need to rethink
       nodes.each do |tag|
         code = tag['ruby']
 
