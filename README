@@ -1,7 +1,7 @@
 Ruhl (Ruby Hypertext Language)
 
 This project is here to flesh out an idea.  What I want is to have developers 
-work with HTML and with the simple addition of a 'ruby' attribute, convert it 
+work with HTML and with the simple addition of a 'data-ruhl' attribute, convert it 
 to a dynamic page.
 
 At no time in the dev process would the view be unviewable in a browser.  
@@ -15,19 +15,19 @@ Notes (use cases) for me to remember:
 :: Basic Use ::
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-<h1 ruby="page_header">
+<h1 data-ruhl="page_header">
 
 Method :page_header would know how to represent itself in the context of 
 the h1 element.
 
-The ruby executed would replace the content of the element it was being 
+The Ruby executed would replace the content of the element it was being 
 called on.  
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 :: Replacing attribute values ::
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-<meta ruby="content: meta_description" content='This is a description template' 
+<meta data-ruhl="content: meta_description" content='This is a description template' 
   id='metaDescription' name='description' />
 
 content: meta_description is telling the parser to replace attribute 'content'
@@ -37,30 +37,21 @@ with results from meta_description method.
 :: Don't use iterators in views ::
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-<table id="aab" ruby="_collection: user_list">
-  <tr>
-    <td ruby="name">John Doe</td>
-    <td ruby="email">john@doe.com</td>
+<table id="aab">
+  <tr data-ruhl="_collection: user_list">
+    <td data-ruhl="name">John Doe</td>
+    <td data-ruhl="email">john@doe.com</td>
   </tr>
 </table>
 
-A few things to note about this:
+The above will call the :user_list method and iterate over the results.  For each result it will duplicate the tag and it's contents.  For the above example this means:
 
-1) The method _collection calls (in this case :user_list) must implement :each
+  <tr data-ruhl="_collection: user_list">
+    <td data-ruhl="name">John Doe</td>
+    <td data-ruhl="email">john@doe.com</td>
+  </tr>
 
-2) Ruhl iterates over the results and renders the inner html 
-   against each object.
-
-3) Ruhl will first try to call the ruby method (:name) against the 
-   local object.  If the local object does not respond_to? the ruby method,
-   Ruhl will try to call it against the scope.
-
-To sum this up in code:
-
-      user_list.collect do |item|
-        Ruhl::Engine.new(tag.inner_html, :local_object => item).render(scope)
-      end.to_s
-
+is duplicated for each user in user_list. 
 
 If user_list return an array of User objects like:
 
@@ -95,13 +86,13 @@ Layout:
     <title>This is a title template</title>
   </head>
   <body>
-    <div ruby="_render_"></div>
+    <div data-ruhl="_render_"></div>
   </body>
 </html>
 
 Fragment:
-<h1 ruby="generate_h1">I am a templated headline</h1>
-<p ruby="my_content">Lorem ipsum dolor sit amet</p>
+<h1 data-ruhl="generate_h1">I am a templated headline</h1>
+<p data-ruhl="my_content">Lorem ipsum dolor sit amet</p>
 
 To use:
 
@@ -124,7 +115,7 @@ Main:
   </head>
   <body>
     <div id="wrap">
-      <div id="sidebar" ruby="_partial: sidebar_partial">
+      <div id="sidebar" data-ruhl="_partial: sidebar_partial">
         <h3>Sidebar links</h3>
         <ul>
           <li><a href="#">Link 1</a></li>
@@ -168,7 +159,7 @@ of the calling node.
 
 * No eval (I don't think eval is evil, it's just not the way this works)
 
-* The ruby attribute is always removed from the output.
+* The data-ruhl attribute is always removed from the output.
 
 * Each method called must accept a tag parameter.  
     e.g def page_header(tag)

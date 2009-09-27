@@ -31,7 +31,6 @@ def user_list(tag = nil)
     TestUser.new('Jake', 'Smo', 'jake@stonean.com'),
     TestUser.new('Paul', 'Tin', 'paul@stonean.com')
   ]
-
 end
 
 describe Ruhl do
@@ -68,12 +67,21 @@ describe Ruhl do
   describe "medium.html" do
     before do
       @html = File.read html(:medium)
+      @doc = create_doc
     end
 
-    it "ul content should have new li's" do
-      doc = create_doc
-      #ul = doc.xpath('//ul').first
-      #ul.inner_html.should ==  "<li>line item 1</li>\n<li>line item 2</li>\n"
+    it "first data row should equal first user " do
+      table = @doc.xpath('/html/body/table/tr//td')
+      table.children[0].to_s.should == "Jane"
+      table.children[1].to_s.should == "Doe"
+      table.children[2].to_s.should == "jane@stonean.com"
+    end
+
+    it "last data row should equal last user " do
+      table = @doc.xpath('/html/body/table/tr//td')
+      table.children[9].to_s.should == "Paul"
+      table.children[10].to_s.should == "Tin"
+      table.children[11].to_s.should == "paul@stonean.com"
     end
   end
 

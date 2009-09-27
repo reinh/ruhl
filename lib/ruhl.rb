@@ -43,24 +43,6 @@ module Ruhl
 
     private
 
-    def process_attribute(tag,code)
-      parts = code.split(';')
-      parts.each do |pair|
-        attribute, value = pair.split(':')
-        
-        value.strip!
-
-        if attribute  == "_partial"
-          tag.inner_html = render_partial(tag, value)
-        elsif attribute  == "_collection"
-          doc = render_collection(tag, value)
-          tag.inner_html =  doc
-        else
-          tag[attribute] = execute_ruby(tag, value)
-        end
-      end
-    end
-
     def render_with_layout
       render_file( File.read(@layout) ) 
     end
@@ -73,8 +55,11 @@ module Ruhl
 
     def render_collection(tag, code)
       results = execute_ruby(tag, code)
-      results.collect do |item|
-        Ruhl::Engine.new(tag.inner_html, :local_object => item).render(scope)
+
+      html = tag.to_html
+
+      tag.inner_html = results.collect do |item|
+        Ruhl::Engine.new(html, :local_object => item).render(scope)
       end.to_s
     end
 
@@ -89,29 +74,35 @@ module Ruhl
         nodes = doc.search('*[@data-ruhl]')
       end
 
-      #TODO: this feels inefficient...need to rethink
-      nodes.each do |tag|
-        code = tag['data-ruhl']
+      return if nodes.empty?
 
-        if code =~ /^\w+:/
-          process_attribute(tag,code)
+      tag = nodes.first
+      code = tag.remove_attribute('data-ruhl') 
+      process_attribute(nodes, tag, code.value)
+      parse_doc(doc)
+    end
+
+    def process_attribute(nodes, tag, code)
+      parts = code.split(',')
+
+      parts.each do |pair|
+        attribute, value = pair.split(':')
+        
+        if value.nil?
+          tag.inner_html = execute_ruby(tag, attribute)
         else
-          tag.inner_html = execute_ruby(tag,code)
+          value.strip!
+          if attribute  == "_partial"
+            tag.inner_html = render_partial(tag, value)
+          elsif attribute  == "_collection"
+            render_collection(tag, value)
+          else
+            tag[attribute] = execute_ruby(tag, value)
+          end
         end
-
-        tag.remove_attribute('data-ruhl')
-
-        # We are changing the NodeSet, stop and reparse
-        parse_doc(doc)
-        break;
       end
     end
-      
-    def set_scope(current_scope)
-      raise Ruhl::NoScopeError unless current_scope
-      @scope = current_scope 
-    end
-
+     
     def execute_ruby(tag, code)
       unless code == '_render_'
         if local_object && local_object.respond_to?(code)
@@ -123,5 +114,11 @@ module Ruhl
         _render_
       end
     end
+
+    def set_scope(current_scope)
+      raise Ruhl::NoScopeError unless current_scope
+      @scope = current_scope 
+    end
+
   end
 end
