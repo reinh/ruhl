@@ -70,7 +70,7 @@ module Ruhl
     end
 
     def parse_doc(doc)
-      if (nodes = doc.xpath('//*[@data-ruhl]')).empty?
+      if (nodes = doc.xpath('//*[@data-ruhl][1]')).empty?
         nodes = doc.search('*[@data-ruhl]')
       end
 
@@ -78,14 +78,12 @@ module Ruhl
 
       tag = nodes.first
       code = tag.remove_attribute('data-ruhl') 
-      process_attribute(nodes, tag, code.value)
+      process_attribute(tag, code.value)
       parse_doc(doc)
     end
 
-    def process_attribute(nodes, tag, code)
-      parts = code.split(',')
-
-      parts.each do |pair|
+    def process_attribute(tag, code)
+      code.split(',').each do |pair|
         attribute, value = pair.split(':')
         
         if value.nil?
