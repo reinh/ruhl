@@ -64,9 +64,9 @@ module Ruhl
     end
 
     def render_file(contents)
-     doc = Nokogiri::HTML( contents ) 
-     parse_doc(doc)
-     doc.to_s
+      doc = Nokogiri::HTML( contents ) 
+      parse_doc(doc)
+      doc.to_s
     end
 
     def parse_doc(doc)
