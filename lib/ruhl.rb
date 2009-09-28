@@ -58,9 +58,11 @@ module Ruhl
 
       html = tag.to_html
 
-      tag.inner_html = results.collect do |item|
+      new_content = results.collect do |item|
         Ruhl::Engine.new(html, :local_object => item).render(scope)
       end.to_s
+
+      tag.swap(new_content)
     end
 
     def render_file(contents)
